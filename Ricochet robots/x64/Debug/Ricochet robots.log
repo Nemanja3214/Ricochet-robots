@@ -1,8 +1,0 @@
-﻿  Game.cpp
-  main.cpp
-  MatrixField.cpp
-  State.cpp
-C:\Users\Dell\Desktop\Ricochet-robots\Ricochet robots\State.cpp(63,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  Generating Code...
-C:\Users\Dell\Desktop\Ricochet-robots\Ricochet robots\Game.cpp(17): warning C4715: 'Game::Search': not all control paths return a value
-  Ricochet robots.vcxproj -> C:\Users\Dell\Desktop\Ricochet-robots\x64\Debug\Ricochet robots.exe
