@@ -30,9 +30,6 @@ int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 			currentField = current_state.GetBoard()[i * SIZE + j];
 			nextField = current_state.GetBoard()[(i + 1) * SIZE + j];
 		}
-		result_i = i;
-		result_j = j;
-		return i * SIZE + j;
 	}
 
 	if (direction == S) {
@@ -42,9 +39,6 @@ int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 			currentField = current_state.GetBoard()[i * SIZE + j];
 			nextField = current_state.GetBoard()[(i + 1) * SIZE + j];
 		}
-		result_i = i;
-		result_j = j;
-		return i * SIZE + j;
 	}
 
 	if (direction == E) {
@@ -54,9 +48,6 @@ int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 			currentField = current_state.GetBoard()[i * SIZE + j];
 			nextField = current_state.GetBoard()[i * SIZE + (j + 1)];
 		}
-		result_i = i;
-		result_j = j;
-		return i * SIZE + j;
 	}
 
 	if (direction == W) {
@@ -66,15 +57,22 @@ int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 			currentField = current_state.GetBoard()[i * SIZE + j];
 			nextField = current_state.GetBoard()[i * SIZE + (j - 1)];
 		}
-		result_i = i;
-		result_j = j;
-		return i * SIZE + j;
 	}
+	result_i = i;
+	result_j = j;
+	return i * SIZE + j;
 }
 
 void Game::DoMove(Direction direction) {
-	int result_i, result_j;
-	int endPosition = FindEnd(direction, result_i, result_j);
+	int end_i, end_j;
+	FindEnd(direction, end_i, end_j);
+	current_state.GetBoard()[active_position_i * SIZE + active_position_j].A = false;
+	active_position_i = end_i;
+	active_position_j = end_j;
+	current_state.GetBoard()[end_i * SIZE + end_j].A = true;
+	current_state.active_position_i = end_i;
+	current_state.active_position_j = end_j;
+
 }
 
 void Game::Print() {
