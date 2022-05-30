@@ -16,7 +16,6 @@ int Game::Search(int depth) {
 	//TODO add to map
 }
 
-// result i and j maybe sufficient
 int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 	MatrixField currentField(current_state.GetBoard()[active_position_i * SIZE + active_position_j]);
 	MatrixField nextField;
@@ -65,8 +64,11 @@ int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 
 void Game::DoMove(Direction direction) {
 	int end_i, end_j;
+	// find where will robot end
 	FindEnd(direction, end_i, end_j);
+	// current active field is no longer active
 	current_state.GetBoard()[active_position_i * SIZE + active_position_j].A = false;
+	// set new active
 	active_position_i = end_i;
 	active_position_j = end_j;
 	current_state.GetBoard()[end_i * SIZE + end_j].A = true;
