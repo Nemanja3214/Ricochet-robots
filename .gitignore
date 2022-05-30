@@ -1,5 +1,5 @@
 # Prerequisites
-.vs
+/.vs
 x64
 *.d
 ## Ignore Visual Studio temporary files, build results, and

@@ -1,3 +1,0 @@
-﻿  Game.cpp
-C:\Users\Dell\Desktop\Ricochet-robots\Ricochet robots\Game.cpp(72): warning C4715: 'Game::FindEnd': not all control paths return a value
-  Ricochet robots.vcxproj -> C:\Users\Dell\Desktop\Ricochet-robots\x64\Debug\Ricochet robots.exe
