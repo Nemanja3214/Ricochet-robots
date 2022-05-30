@@ -9,7 +9,7 @@ State::State() {
 }
 
 State::State(const State& other) {
-	
+	throw new exception("not implemented yet");
 }
 
 MatrixField* State::GetBoard() {
@@ -18,7 +18,7 @@ MatrixField* State::GetBoard() {
 
 void State::printHorizontalDashes(int i, function<bool(int, int)> isWallPresent) {
 	cout << " ";
-	for (int j = 0; j < State::SIZE; ++j) {
+	for (int j = 0; j < SIZE; ++j) {
 		if (isWallPresent(i, j))
 			cout << "_";
 		else
@@ -29,37 +29,37 @@ void State::printHorizontalDashes(int i, function<bool(int, int)> isWallPresent)
 }
 
 void State::Print() {
-	for (int i = 0; i < State::SIZE; ++i) {
-		printHorizontalDashes(i, [=](int i, int j) { return board[i * State::SIZE + j].N; });
+	for (int i = 0; i < SIZE; ++i) {
+		printHorizontalDashes(i, [=](int i, int j) { return board[i * SIZE + j].N; });
 
-		for (int j = 0; j < State::SIZE; ++j) {
-			if (board[i * State::SIZE + j].W)
+		for (int j = 0; j < SIZE; ++j) {
+			if (board[i * SIZE + j].W)
 				cout << "|";
 			else
 				cout << " ";
 
-			if(board[i * State::SIZE + j].A)
+			if(board[i * SIZE + j].A)
 				cout << "A";
-			else if(i * State::SIZE + j == goalPosition)
+			else if(i * SIZE + j == goalPosition)
 				cout << "G";
 			else
 				cout << " ";
 
 
-			if (board[i * State::SIZE + j].E)
+			if (board[i * SIZE + j].E)
 				cout << "|";
 			else
 				cout << " ";
 		}
 		cout << endl;
 
-		printHorizontalDashes(i, [=](int i, int j) { return board[i * State::SIZE + j].S; });
+		printHorizontalDashes(i, [=](int i, int j) { return board[i * SIZE + j].S; });
 	}
 }
 
 
 
-void State::InitState(int& wallsLeft, int& gameGoalPosition) {
+void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_state_i,  int& game_active_state_j) {
 	srand(time(NULL));
 	bool N, S, W, E, A;
 	for (int i = 0; i < SIZE; ++i) {
@@ -107,12 +107,16 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition) {
 		}
 	}
 	//TODO add active randomly
-	active_position = rand() % (SIZE * SIZE);
+	int active_position = rand() % (SIZE * SIZE);
 
 	while(board[active_position].CountWalls() < 2)
 		active_position = rand() % (SIZE * SIZE);
 
 	board[active_position].A = true;
+	active_position_i = active_position / SIZE;
+	active_position_j = active_position % SIZE;
+	game_active_state_i = active_position_i;
+	game_active_state_j = active_position_j;
 
 
 	goalPosition = rand() % (SIZE * SIZE);
@@ -122,5 +126,5 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition) {
 }
 
 int State::ToHash() {
-	return active_position; // the active robot is the only dynamic factor
+	return active_position_i ; // the active robot is the only dynamic factor
 }
