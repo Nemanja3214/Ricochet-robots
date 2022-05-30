@@ -30,8 +30,10 @@ void State::printHorizontalDashes(int i, function<bool(int, int)> isWallPresent)
 
 void State::Print() {
 	for (int i = 0; i < SIZE; ++i) {
+		// print north walls
 		printHorizontalDashes(i, [=](int i, int j) { return board[i * SIZE + j].N; });
 
+		// print east and west walls
 		for (int j = 0; j < SIZE; ++j) {
 			if (board[i * SIZE + j].W)
 				cout << "|";
@@ -53,6 +55,7 @@ void State::Print() {
 		}
 		cout << endl;
 
+		// print south walls
 		printHorizontalDashes(i, [=](int i, int j) { return board[i * SIZE + j].S; });
 	}
 }
@@ -106,7 +109,7 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_st
 
 		}
 	}
-	//TODO add active randomly
+	// randomly choose active position
 	int active_position = rand() % (SIZE * SIZE);
 
 	while(board[active_position].CountWalls() < 2)
@@ -118,7 +121,7 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_st
 	game_active_state_i = active_position_i;
 	game_active_state_j = active_position_j;
 
-
+	// randomly set goal for robot
 	goalPosition = rand() % (SIZE * SIZE);
 	while (board[goalPosition].CountWalls() < 2)
 		goalPosition = rand() % (SIZE * SIZE);
@@ -126,5 +129,5 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_st
 }
 
 int State::ToHash() {
-	return active_position_i ; // the active robot is the only dynamic factor
+	return active_position_i * SIZE + active_position_j ; // the active robot is the only dynamic factor
 }
