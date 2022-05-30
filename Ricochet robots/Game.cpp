@@ -23,10 +23,10 @@ int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 	int i = active_position_i;
 	int j = active_position_j;
 
-	if (direction == S) {
-		nextField = current_state.GetBoard()[(i + 1) * SIZE + j];
-		while ((!currentField.N || !nextField.S) && i != SIZE - 1) {
-			++i;
+	if (direction == N) {
+		nextField = current_state.GetBoard()[(i - 1) * SIZE + j];
+		while (!currentField.N && !nextField.S && i != 0) {
+			--i;
 			currentField = current_state.GetBoard()[i * SIZE + j];
 			nextField = current_state.GetBoard()[(i + 1) * SIZE + j];
 		}
@@ -35,10 +35,10 @@ int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 		return i * SIZE + j;
 	}
 
-	if (direction == N) {
-		nextField = current_state.GetBoard()[(i - 1) * SIZE + j];
-		while ((!currentField.S || !nextField.N) && i == 0) {
-			--i;
+	if (direction == S) {
+		nextField = current_state.GetBoard()[(i + 1) * SIZE + j];
+		while (!currentField.S && !nextField.N && i != SIZE - 1) {
+			++i;
 			currentField = current_state.GetBoard()[i * SIZE + j];
 			nextField = current_state.GetBoard()[(i + 1) * SIZE + j];
 		}
@@ -49,7 +49,7 @@ int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 
 	if (direction == E) {
 		nextField = current_state.GetBoard()[i * SIZE + (j + 1)];
-		while ((!currentField.E || !nextField.W) && j != SIZE - 1) {
+		while (!currentField.E && !nextField.W && j != SIZE - 1) {
 			++j;
 			currentField = current_state.GetBoard()[i * SIZE + j];
 			nextField = current_state.GetBoard()[i * SIZE + (j + 1)];
@@ -61,7 +61,7 @@ int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 
 	if (direction == W) {
 		nextField = current_state.GetBoard()[i * SIZE + (j - 1)];
-		while ((!currentField.W || !nextField.E) && j == 0) {
+		while (!currentField.W && !nextField.E && j != 0) {
 			--j;
 			currentField = current_state.GetBoard()[i * SIZE + j];
 			nextField = current_state.GetBoard()[i * SIZE + (j - 1)];
