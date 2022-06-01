@@ -76,16 +76,25 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_st
 			// randomly generate walls
 			if (wallsLeft > 0) {
 				N = !(rand() % 20);
-				if (N) --wallsLeft;
-
-				S = !(rand() % 20);
-				if (S) --wallsLeft;
-
-				W = !(rand() % 20);
-				if (W) --wallsLeft;
-
-				E = !(rand() % 20);
-				if (E) --wallsLeft;
+				if (N)
+					--wallsLeft;
+				else
+				{
+					S = !(rand() % 20);
+					if (S) --wallsLeft;
+				}
+				
+				if (S || N) {
+					W = !(rand() % 1);
+					if (W)
+						--wallsLeft;
+					else {
+						E = !(rand() % 1);
+						if (E) --wallsLeft;
+					}
+					
+				}
+				
 			}
 			
 
@@ -109,6 +118,7 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_st
 
 		}
 	}
+	/*
 	// randomly choose active position
 	int active_position = rand() % (SIZE * SIZE);
 
@@ -125,7 +135,16 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_st
 	goalPosition = rand() % (SIZE * SIZE);
 	while (board[goalPosition].CountWalls() < 2)
 		goalPosition = rand() % (SIZE * SIZE);
-	gameGoalPosition = goalPosition;
+	gameGoalPosition = goalPosition;*/
+
+	//TEST
+	board[0].A = true;
+	active_position_i = 0;
+	active_position_j = 0;
+	game_active_state_i = active_position_i;
+	game_active_state_j = active_position_j;
+	goalPosition = 255;
+	gameGoalPosition = 255;
 }
 
 int State::ToHash() {
