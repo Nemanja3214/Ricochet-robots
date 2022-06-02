@@ -12,7 +12,7 @@ using namespace std;
 
 class Game {
 public:
-	enum Direction { W, N, E, S };
+	enum Direction { W, N, E, S, NO_DIRECTION };
 	Game();
 	State& GetState();
 	int Search();
@@ -26,7 +26,7 @@ public:
 	int active_position_j;
 private:
 	State current_state;
-	int search(int depth);
+	int search(int depth, Direction previousDirection);
 	Direction getOppositeDirection(Direction direction);
 	int wallsLeft = MAX_NUM_OF_WALLS;
 	int goalPosition = 0;

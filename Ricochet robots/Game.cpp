@@ -2,7 +2,7 @@
 
 
 
-Game::Game() : current_state() {
+Game::Game() : current_state(){
 	current_state.InitState(wallsLeft, goalPosition, active_position_i, active_position_j);
 }
 
@@ -16,29 +16,44 @@ Game::Direction Game::getOppositeDirection(Direction direction) {
 	case S: return N;
 	case E: return W;
 	case W: return E;
+	case NO_DIRECTION: return NO_DIRECTION;
 	default: throw exception("Non existant direction");
 	};
 }
 
-int Game::search(int depth) {
-	if (goalPosition == active_position_i * SIZE + active_position_i)
+int Game::search(int depth, Direction previousDirection) {
+
+	if (goalPosition == active_position_i * SIZE + active_position_i) {
+		Print();
 		return depth;
-	
-	for (int i = 0; i < 5; ++i) {
+	}
+		
+
+	if(passedStates[current_state.ToHash()] > depth)
+		passedStates[current_state.ToHash()] = depth;
+
+	int result = -1;
+	for (int i = 0; i < 4; ++i) {
 		Direction direction = static_cast<Direction>(i);
-		if (!CanMove(direction))
+		if (!CanMove(direction) || direction == getOppositeDirection(previousDirection))
 			continue;
+		
 		DoMove(direction);
 		Print();
-		int result = search(depth++);
+		
+		if(passedStates.find(current_state.ToHash()) == passedStates.end())
+			result = search(depth++, direction);
 		DoMove(getOppositeDirection(direction));
+		if (result) {
+			return result;
+		}
 	}
 	
-	//TODO add to map
+	return 0;
 }
 
 int Game::Search() {
-	return search(0);
+	return search(1, NO_DIRECTION);
 }
 
 MatrixField& Game::GetActive() {

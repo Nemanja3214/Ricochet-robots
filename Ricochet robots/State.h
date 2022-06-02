@@ -11,8 +11,7 @@ using namespace std;
 class State {
 public:
 	State();
-	State(const State& other);
-	void InitState(int& wallsLeft, int& gameGoalPosition, int& active_state_i, int& active_state_j);
+	void InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_position_i, int& game_active_position_j);
 	MatrixField* GetBoard();
 	void Print();
 	int ToHash();
