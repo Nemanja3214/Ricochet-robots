@@ -24,12 +24,13 @@ int Game::search(int depth) {
 	if (goalPosition == active_position_i * SIZE + active_position_i) {
 		return depth;
 	}
-	// excessive
-	if (passedStates.find(current_state.ToHash()) != passedStates.end())
-		return 0;
 
-	if (passedStates[current_state.ToHash()] > depth)
+	if (passedStates.find(current_state.ToHash()) == passedStates.end())
 		passedStates[current_state.ToHash()] = depth;
+	else if (passedStates[current_state.ToHash()] > depth)
+		passedStates[current_state.ToHash()] = depth;
+	else
+		return 0;
 
 	for (int i = 0; i < 4; ++i) {
 		Direction direction = static_cast<Direction>(i);
@@ -38,10 +39,9 @@ int Game::search(int depth) {
 		
 		DoMove(direction);
 		int result = 0;
-		if (passedStates.find(current_state.ToHash()) == passedStates.end()) {
+		if (passedStates.find(current_state.ToHash()) == passedStates.end())
 			Print();
-			result = search(++depth);
-		}	
+		result = search(depth + 1);
 		DoMove(getOppositeDirection(direction));
 		if (result)
 			return result;
