@@ -12,13 +12,13 @@ using namespace std;
 
 class Game {
 public:
-	enum Direction { W, N, E, S };
+	enum Direction { W, N, E, S};
 	Game();
 	State& GetState();
 	int Search();
 	void DoMove(Direction direction);
 	void Print();
-	int FindEnd(Direction direction, int& result_i, int& result_j);
+	int FindEnd(Direction direction, int i, int j, int& result_i, int& result_j);
 	bool CanMove(Direction direction);
 	MatrixField& GetActive();
 	MatrixField& GetNextField(int i, int j, Direction direction);

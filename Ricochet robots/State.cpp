@@ -7,11 +7,6 @@
 State::State() {
 
 }
-
-State::State(const State& other) {
-	throw new exception("not implemented yet");
-}
-
 MatrixField* State::GetBoard() {
 	return board;
 }
@@ -62,7 +57,7 @@ void State::Print() {
 
 
 
-void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_state_i,  int& game_active_state_j) {
+void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_position_i, int& game_active_position_j) {
 	srand(time(NULL));
 	bool N, S, W, E, A;
 	for (int i = 0; i < SIZE; ++i) {
@@ -141,10 +136,10 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_st
 	board[0].A = true;
 	active_position_i = 0;
 	active_position_j = 0;
-	game_active_state_i = active_position_i;
-	game_active_state_j = active_position_j;
-	goalPosition = 255;
-	gameGoalPosition = 255;
+	game_active_position_i = active_position_i;
+	game_active_position_j = active_position_j;
+	goalPosition = 63;
+	gameGoalPosition = 63;
 }
 
 int State::ToHash() {
