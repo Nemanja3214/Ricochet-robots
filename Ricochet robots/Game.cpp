@@ -16,44 +16,41 @@ Game::Direction Game::getOppositeDirection(Direction direction) {
 	case S: return N;
 	case E: return W;
 	case W: return E;
-	case NO_DIRECTION: return NO_DIRECTION;
 	default: throw exception("Non existant direction");
 	};
 }
 
-int Game::search(int depth, Direction previousDirection) {
+int Game::search(int depth) {
 
+	//if this is solution add it
 	if (goalPosition == active_position_i * SIZE + active_position_i) {
-		Print();
 		return depth;
 	}
-		
+	if (passedStates.find(current_state.ToHash()) != passedStates.end())
+		return 0;
 
-	if(passedStates[current_state.ToHash()] > depth)
+	if (passedStates[current_state.ToHash()] > depth)
 		passedStates[current_state.ToHash()] = depth;
 
-	int result = -1;
 	for (int i = 0; i < 4; ++i) {
 		Direction direction = static_cast<Direction>(i);
-		if (!CanMove(direction) || direction == getOppositeDirection(previousDirection))
+		if (!CanMove(direction))
 			continue;
 		
 		DoMove(direction);
-		Print();
-		
-		if(passedStates.find(current_state.ToHash()) == passedStates.end())
-			result = search(depth++, direction);
+		int result = 0;
+		if (passedStates.find(current_state.ToHash()) == passedStates.end())
+			Print();
+		result = search(++depth);
 		DoMove(getOppositeDirection(direction));
-		if (result) {
+		if (result)
 			return result;
-		}
 	}
-	
 	return 0;
 }
 
 int Game::Search() {
-	return search(1, NO_DIRECTION);
+	return search(1);;
 }
 
 MatrixField& Game::GetActive() {
@@ -84,11 +81,9 @@ MatrixField& Game::GetNextField(int i, int j, Direction direction) {
 	}
 }
 
-int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
-	MatrixField currentField(current_state.GetBoard()[active_position_i * SIZE + active_position_j]);
+int Game::FindEnd(Direction direction, int i, int j, int& result_i, int& result_j) {
+	MatrixField currentField(current_state.GetBoard()[i * SIZE + j]);
 	MatrixField nextField;
-	int i = active_position_i;
-	int j = active_position_j;
 
 	if (direction == N) {
 		nextField = current_state.GetBoard()[(i - 1) * SIZE + j];
@@ -133,7 +128,7 @@ int Game::FindEnd(Direction direction, int& result_i, int& result_j) {
 void Game::DoMove(Direction direction) {
 	int end_i, end_j;
 	// find where will robot end
-	FindEnd(direction, end_i, end_j);
+	FindEnd(direction, active_position_i, active_position_j, end_i, end_j);
 	// current active field is no longer active
 	current_state.GetBoard()[active_position_i * SIZE + active_position_j].A = false;
 	// set new active

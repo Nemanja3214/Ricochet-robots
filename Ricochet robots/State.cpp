@@ -138,8 +138,8 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_po
 	active_position_j = 0;
 	game_active_position_i = active_position_i;
 	game_active_position_j = active_position_j;
-	goalPosition = 255;
-	gameGoalPosition = 255;
+	goalPosition = 63;
+	gameGoalPosition = 63;
 }
 
 int State::ToHash() {
