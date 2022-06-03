@@ -21,11 +21,10 @@ Game::Direction Game::getOppositeDirection(Direction direction) {
 }
 
 int Game::search(int depth) {
-
-	//if this is solution add it
 	if (goalPosition == active_position_i * SIZE + active_position_i) {
 		return depth;
 	}
+	// excessive
 	if (passedStates.find(current_state.ToHash()) != passedStates.end())
 		return 0;
 
@@ -39,9 +38,10 @@ int Game::search(int depth) {
 		
 		DoMove(direction);
 		int result = 0;
-		if (passedStates.find(current_state.ToHash()) == passedStates.end())
+		if (passedStates.find(current_state.ToHash()) == passedStates.end()) {
 			Print();
-		result = search(++depth);
+			result = search(++depth);
+		}	
 		DoMove(getOppositeDirection(direction));
 		if (result)
 			return result;
@@ -50,7 +50,7 @@ int Game::search(int depth) {
 }
 
 int Game::Search() {
-	return search(1);;
+	return search(0);;
 }
 
 MatrixField& Game::GetActive() {
@@ -73,7 +73,7 @@ bool Game::CanMove(Direction direction) {
 
 MatrixField& Game::GetNextField(int i, int j, Direction direction) {
 	switch (direction) {
-	case N: return current_state.GetBoard()[(i + 1) * SIZE + j];
+	case N: return current_state.GetBoard()[(i - 1) * SIZE + j];
 	case S: return current_state.GetBoard()[(i + 1) * SIZE + j];
 	case E: return current_state.GetBoard()[i * SIZE + (j + 1)];
 	case W: return current_state.GetBoard()[i * SIZE + (j - 1)];
