@@ -7,9 +7,6 @@
 State::State() {
 
 }
-MatrixField* State::GetBoard() {
-	return board;
-}
 
 void State::printHorizontalDashes(int i, function<bool(int, int)> isWallPresent) {
 	cout << " ";
@@ -59,11 +56,11 @@ void State::DoMove(Direction direction) {
 	// find where will robot end
 	FindEnd(direction, active_position_i, active_position_j, end_i, end_j);
 	// current active field is no longer active
-	GetBoard()[active_position_i * SIZE + active_position_j].A = false;
+	board[active_position_i * SIZE + active_position_j].A = false;
 	// set new active
 	active_position_i = end_i;
 	active_position_j = end_j;
-	GetBoard()[end_i * SIZE + end_j].A = true;
+	board[end_i * SIZE + end_j].A = true;
 
 }
 
@@ -164,7 +161,7 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_po
 }
 
 MatrixField& State::GetActive() {
-	return GetBoard()[active_position_i * SIZE + active_position_j];
+	return board[active_position_i * SIZE + active_position_j];
 }
 
 int State::ToHash() {
@@ -188,50 +185,50 @@ bool State::CanMove(Direction direction) {
 
 MatrixField& State::GetNextField(int i, int j, Direction direction) {
 	switch (direction) {
-	case N: return GetBoard()[(i - 1) * SIZE + j];
-	case S: return GetBoard()[(i + 1) * SIZE + j];
-	case E: return GetBoard()[i * SIZE + (j + 1)];
-	case W: return GetBoard()[i * SIZE + (j - 1)];
+	case N: return board[(i - 1) * SIZE + j];
+	case S: return board[(i + 1) * SIZE + j];
+	case E: return board[i * SIZE + (j + 1)];
+	case W: return board[i * SIZE + (j - 1)];
 	default: throw exception("Next field error");
 	}
 }
 
 int State::FindEnd(Direction direction, int i, int j, int& result_i, int& result_j) {
-	MatrixField currentField(GetBoard()[i * SIZE + j]);
+	MatrixField currentField(board[i * SIZE + j]);
 	MatrixField nextField;
 
 	if (direction == N) {
-		nextField = GetBoard()[(i - 1) * SIZE + j];
+		nextField = board[(i - 1) * SIZE + j];
 		while (!currentField.N && !nextField.S && i != 0) {
 			--i;
-			currentField = GetBoard()[i * SIZE + j];
+			currentField = board[i * SIZE + j];
 			nextField = GetNextField(i, j, N);
 		}
 	}
 
 	if (direction == S) {
-		nextField = GetBoard()[(i + 1) * SIZE + j];
+		nextField = board[(i + 1) * SIZE + j];
 		while (!currentField.S && !nextField.N && i != SIZE - 1) {
 			++i;
-			currentField = GetBoard()[i * SIZE + j];
+			currentField = board[i * SIZE + j];
 			nextField = GetNextField(i, j, S);
 		}
 	}
 
 	if (direction == E) {
-		nextField = GetBoard()[i * SIZE + (j + 1)];
+		nextField = board[i * SIZE + (j + 1)];
 		while (!currentField.E && !nextField.W && j != SIZE - 1) {
 			++j;
-			currentField = GetBoard()[i * SIZE + j];
+			currentField = board[i * SIZE + j];
 			nextField = GetNextField(i, j, E);
 		}
 	}
 
 	if (direction == W) {
-		nextField = GetBoard()[i * SIZE + (j - 1)];
+		nextField = board[i * SIZE + (j - 1)];
 		while (!currentField.W && !nextField.E && j != 0) {
 			--j;
-			currentField = GetBoard()[i * SIZE + j];
+			currentField = board[i * SIZE + j];
 			nextField = GetNextField(i, j, W);
 		}
 	}
