@@ -8,6 +8,15 @@ State::State() {
 
 }
 
+State::State(const State& other) {
+	this->active_position_i = other.active_position_i;
+	this->active_position_j = other.active_position_j;
+	this->goal_position_i = other.goal_position_i;
+	this->goal_position_j = other.goal_position_j;
+	this->depth = other.depth;
+	copy(begin(other.board), end(other.board), board);
+}
+
 void State::printHorizontalDashes(int i, function<bool(int, int)> isWallPresent) {
 	cout << " ";
 	for (int j = 0; j < SIZE; ++j) {
@@ -34,7 +43,7 @@ void State::Print() {
 
 			if(board[i * SIZE + j].A)
 				cout << "A";
-			else if(i * SIZE + j == goalPosition)
+			else if(i == goal_position_i && j == goal_position_j)
 				cout << "G";
 			else
 				cout << " ";
@@ -75,7 +84,7 @@ State::Direction State::GetOppositeDirection(State::Direction direction) {
 }
 
 
-void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_position_i, int& game_active_position_j) {
+void State::InitState(int& wallsLeft, int& game_goal_position_i, int& game_goal_position_j, int& game_active_position_i, int& game_active_position_j) {
 	srand(time(NULL));
 	bool N, S, W, E, A;
 	for (int i = 0; i < SIZE; ++i) {
@@ -109,10 +118,6 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_po
 				}
 				
 			}
-			
-
-			// TODO max 3 walls
-
 			// edges of the board guarantee walls
 			if (i == 0)
 				N = true;
@@ -127,8 +132,6 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_po
 			board[i * SIZE + j].N = N;
 			board[i * SIZE + j].W = W;
 			board[i * SIZE + j].S = S;
-
-
 		}
 	}
 	/*
@@ -156,8 +159,11 @@ void State::InitState(int& wallsLeft, int& gameGoalPosition, int& game_active_po
 	active_position_j = 0;
 	game_active_position_i = active_position_i;
 	game_active_position_j = active_position_j;
-	goalPosition = 63;
-	gameGoalPosition = 63;
+
+	goal_position_i = 7;
+	goal_position_j = 7;
+	game_goal_position_i = goal_position_i;
+	game_goal_position_j = goal_position_j;
 }
 
 MatrixField& State::GetActive() {

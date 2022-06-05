@@ -1,49 +1,51 @@
 #include "Game.h"
-
-
+#include <queue>
 
 Game::Game(int active_position_i, int active_position_j) : start_state(){
-	start_state.InitState(wallsLeft, goalPosition, active_position_i, active_position_j);
+	start_state.InitState(wallsLeft, goal_position_i, goal_position_j, active_position_i, active_position_j);
 }
 
 State& Game::GetState() {
 	return start_state;
 }
 
-
-
-int Game::search(int depth, State newState) {
-	if (goalPosition == newState.active_position_i * SIZE + newState.active_position_i) {
-		return depth;
-	}
-
-	if (passedStates.find(newState.ToHash()) == passedStates.end())
-		passedStates[newState.ToHash()] = depth;
-	else if (passedStates[newState.ToHash()] > depth)
-		passedStates[newState.ToHash()] = depth;
-	else
-		return 0;
-
-	for (int i = 0; i < 4; ++i) {
-		State::Direction direction = static_cast<State::Direction>(i);
-		if (!newState.CanMove(direction))
-			continue;
-		
-		
-		newState.DoMove(direction);
-		int result = 0;
-		if (passedStates.find(newState.ToHash()) == passedStates.end())
-			newState.Print();
-		result = search(depth + 1, newState);
-		newState.DoMove(State::GetOppositeDirection(direction));
-		if (result)
-			return result;
-	}
-	return 0;
-}
-
 int Game::Search() {
-	return search(0, start_state);
+	int depth = 1;
+	queue<State> queue;
+	queue.push(start_state);
+	State currentState;
+	passedStates.insert(start_state.ToHash());
+	while (!queue.empty()) {
+		currentState = queue.front();
+		queue.pop();
+		for (int i = 0; i < 4; ++i) {
+			State::Direction direction = static_cast<State::Direction>(i);
+			if (!currentState.CanMove(direction))
+				continue;
+
+			// do move
+			currentState.DoMove(direction);
+			++currentState.depth;
+
+			// check whether it is a solution
+			if (currentState.active_position_i == goal_position_i && currentState.active_position_j == goal_position_j) {
+				return currentState.depth;
+			}
+				
+
+			//check whether it has been already been seen
+			if (passedStates.find(currentState.ToHash()) == passedStates.end()) {
+				currentState.Print();
+				queue.push(currentState);
+				passedStates.insert(currentState.ToHash());
+			}
+			--currentState.depth;
+			currentState.DoMove(State::GetOppositeDirection(direction));
+		}
+		cout << "<<<<<<<<<<<<<<<<<<<<<NEW NODE<<<<<<<<<<<<<<<<<<<" << endl;
+		++depth;
+	}
+	return -1;
 }
 
 
