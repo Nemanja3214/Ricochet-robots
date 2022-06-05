@@ -12,22 +12,16 @@ using namespace std;
 
 class Game {
 public:
-	enum Direction { W, N, E, S};
-	Game();
+	
+	Game(int active_position_i, int active_position_j);
 	State& GetState();
 	int Search();
-	void DoMove(Direction direction);
-	void Print();
-	int FindEnd(Direction direction, int i, int j, int& result_i, int& result_j);
-	bool CanMove(Direction direction);
-	MatrixField& GetActive();
-	MatrixField& GetNextField(int i, int j, Direction direction);
-	int active_position_i;
-	int active_position_j;
+	//void Print();
+
+	
 private:
-	State current_state;
-	int search(int depth);
-	Direction getOppositeDirection(Direction direction);
+	State start_state;
+	int search(int depth, State state);
 	int wallsLeft = MAX_NUM_OF_WALLS;
 	int goalPosition = 0;
 	unordered_map<int, int> passedStates;

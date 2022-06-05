@@ -141,7 +141,6 @@
   <ItemGroup>
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="main.h" />
     <ClInclude Include="MatrixField.h" />
     <ClInclude Include="State.h" />
   </ItemGroup>

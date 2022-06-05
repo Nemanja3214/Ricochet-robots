@@ -2,10 +2,10 @@
 #include "State.h"
 using namespace std;
 int main() {
-	Game g;
-	g.Print();
-	cout << g.active_position_i << endl;
-	cout << g.active_position_j << endl;
+	Game g(0, 0);
+	//g.Print();
+	//cout << g.active_position_i << endl;
+	//cout << g.active_position_j << endl;
 	/*
 	int result_i, result_j;
 	g.FindEnd(Game::N, result_i, result_j);
