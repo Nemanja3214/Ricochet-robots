@@ -1,2 +1,2 @@
 # Ricochet-robots
-Parallelized solver for game Ricochet robots
+Solver for game Ricochet robots
